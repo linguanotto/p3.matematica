@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gráficos com Chart.js</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <canvas id="myChart"></canvas>
+  <script>
+    // Funções para calcular os valores dos pontos
+    function linearFunction(x, a, b) {
+      return a * x + b;
+    }
+
+    function quadraticFunction(x, a, b, c) {
+      return a * x * x + b * x + c;
+    }
+
+    function cubicFunction(x, a, b, c, d) {
+      return a * x * x * x + b * x * x + c * x + d;
+    }
+
+    function exponentialFunction(x, a, b) {
+      return a * Math.exp(b * x);
+    }
+
+    function logarithmicFunction(x, a, b) {
+      return a * Math.log(b * x);
+    }
+
+    function trigonometricFunction(x, a, b) {
+      return a * Math.sin(b * x);
+    }
+
+    // Criar dados para o gráfico
+    const data = {
+      labels: Array.from({ length: 100 }, (_, i) => i - 50), // Valores de x de -50 a 49
+      datasets: [
+        {
+          label: 'Linear',
+          borderColor: 'red',
+          data: Array.from({ length: 100 }, (_, i) => linearFunction(i - 50, 2, 5)),
+        },
+        {
+          label: 'Quadrática',
+          borderColor: 'blue',
+          data: Array.from({ length: 100 }, (_, i) => quadraticFunction(i - 50, 1, -2, 3)),
+        },
+        {
+          label: 'Cúbica',
+          borderColor: 'green',
+          data: Array.from({ length: 100 }, (_, i) => cubicFunction(i - 50, 0.1, 1, -2, 3)),
+        },
+        {
+          label: 'Exponencial',
+          borderColor: 'purple',
+          data: Array.from({ length: 100 }, (_, i) => exponentialFunction(i - 50, 2, 0.1)),
+        },
+        {
+          label: 'Logarítmica',
+          borderColor: 'orange',
+          data: Array.from({ length: 100 }, (_, i) => logarithmicFunction(i + 1, 2, 0.1)),
+        },
+        {
+          label: 'Trigonométrica',
+          borderColor: 'brown',
+          data: Array.from({ length: 100 }, (_, i) => trigonometricFunction(i - 50, 5, 0.1)),
+        },
+      ],
+    };
+
+    // Configurações do gráfico com largura e altura definidas
+    const config = {
+      type: 'line',
+      data: data,
+      options: {
+        responsive: true,
+        width: 400,  // Largura desejada
+        height: 400, // Altura desejada
+        scales: {
+          x: {
+            type: 'linear',
+            position: 'bottom',
+          },
+          y: {
+            type: 'linear',
+            position: 'left',
+          },
+        },
+      },
+    };
+
+    // Inicializar o gráfico
+    const ctx = document.getElementById('myChart').getContext('2d');
+    new Chart(ctx, config);
+  </script>
+</body>
+</html>

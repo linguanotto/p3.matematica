@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Funções Matemáticas</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div style="width: 25%;">
+    <canvas id="myChart"></canvas>
+  </div>
+  
+  <div>
+    <label for="functionSelector">Escolha uma função:</label>
+    <select id="functionSelector" onchange="updateChart()">
+      <option value="exp">Exponencial</option>
+      <option value="log">Logarítmica</option>
+      <option value="cubic">Cúbica</option>
+      <option value="quadratic">Quadrática</option>
+      <option value="linear">Linear</option>
+    </select>
+    
+    <label for="paramA">Parâmetro A:</label>
+    <input type="number" id="paramA" step="0.1" value="1">
+    
+    <label for="paramB">Parâmetro B:</label>
+    <input type="number" id="paramB" step="0.1" value="0">
+    
+    <label for="paramC">Parâmetro C:</label>
+    <input type="number" id="paramC" step="0.1" value="0">
+    
+    <button onclick="updateChart()">Atualizar Gráfico</button>
+  </div>
+
+  <script>
+    const ctx = document.getElementById('myChart').getContext('2d');
+    let currentFunction = 'exp';
+    let chart;
+
+    function updateChart() {
+      const functionSelector = document.getElementById('functionSelector');
+      const paramA = parseFloat(document.getElementById('paramA').value);
+      const paramB = parseFloat(document.getElementById('paramB').value);
+      const paramC = parseFloat(document.getElementById('paramC').value);
+
+      switch (functionSelector.value) {
+        case 'exp':
+          drawChart(x => Math.exp(paramA * x + paramB) + paramC, 'Exponencial');
+          break;
+        case 'log':
+          drawChart(x => Math.log(paramA * x + paramB) + paramC, 'Logarítmica');
+          break;
+        case 'cubic':
+          drawChart(x => paramA * x**3 + paramB * x**2 + paramC * x, 'Cúbica');
+          break;
+        case 'quadratic':
+          drawChart(x => paramA * x**2 + paramB * x + paramC, 'Quadrática');
+          break;
+        case 'linear':
+          drawChart(x => paramA * x + paramB, 'Linear');
+          break;
+        default:
+          break;
+      }
+    }
+
+    function drawChart(func, label) {
+      if (chart) {
+        chart.destroy();
+      }
+
+      chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: Array.from({ length: 10 }, (_, i) => i),
+          datasets: [{
+            label: label,
+            borderColor: 'rgba(75, 192, 192, 1)',
+            data: Array.from({ length: 10 }, (_, i) => func(i)),
+            fill: false,
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: {
+              display: true,
+              title: {
+                display: true,
+                text: 'X'
+              }
+            },
+            y: {
+              display: true,
+              title: {
+                display: true,
+                text: 'Y'
+              }
+            }
+          }
+        }
+      });
+    }
+
+    updateChart();
+  </script>
+</body>
+</html>
